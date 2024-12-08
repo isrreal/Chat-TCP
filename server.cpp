@@ -5,11 +5,12 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#define PORT 60000
+
+constexpr size_t PORT = 60000;
 
 // Function that sends messages to the client
 void sendMessages(int sock) {
-    std::string message;
+    std::string message {};
     // Infinite loop to send messages while the program is running
     while (true) {
         // Wait for user input to send a message
@@ -20,13 +21,13 @@ void sendMessages(int sock) {
 }
 
 int main(int argc, char const* argv[]) {
-    int obj_server = 0;
-    int sock = 0;
-    int reader = 0;
+    int obj_server {0};
+    int sock {0};
+    int reader {0};
     struct sockaddr_in address;
-    int opted = 1;
-    int address_length = sizeof(address);
-    char buffer[1024] = {0};
+    int opted {1};
+    int address_length { sizeof(address) };
+    char buffer[1024] {0};
 
     // Create the socket
     obj_server = socket(AF_INET, SOCK_STREAM, 0);
@@ -67,7 +68,7 @@ int main(int argc, char const* argv[]) {
     }
 
     // Inform that a connection was established and show the client's address
-    std::cout << "Connection established with " << address.sin_addr.s_addr << "!" << std::endl;
+    std::cout << "Connection established with " << address.sin_addr.s_addr << "!" << '\n';
 
     // Create a thread to send messages to the client
     std::thread senderThread(sendMessages, sock);
@@ -79,7 +80,7 @@ int main(int argc, char const* argv[]) {
         // Read the received data from the client
         reader = read(sock, buffer, 1024);
         // Display the received message from the client
-        std::cout << buffer << std::endl;
+        std::cout << buffer << '\n';
     }
 
     // Wait for the message sending thread to finish
