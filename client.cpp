@@ -5,7 +5,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-#define PORT 60000
+constexpr size_t PORT = 60000;
 
 // Function to send messages to the server
 void sendMessages(int sock) {
@@ -20,15 +20,15 @@ void sendMessages(int sock) {
 }
 
 int main(int argc, char const* argv[]) {
-    std::string mensagem = "";
-    int sock = 0; 
-    int reader = 1;
+    std::string mensagem {};
+    int sock {}; 
+    int reader {};
     struct sockaddr_in serverAddress;
-    char buffer[1024] = {0};
+    char buffer[1024] {0};
 
     // Create a socket
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        std::cout << "Error creating socket!" << std::endl;
+        std::cout << "Error creating socket!\n";
         return -1;
     }
 
@@ -38,13 +38,13 @@ int main(int argc, char const* argv[]) {
 
     // Convert IPv4 and IPv6 addresses from text to binary form
     if(inet_pton(AF_INET, "127.0.0.1", &serverAddress.sin_addr) <= 0) {
-        std::cout << "Invalid address! This IP is not supported!" << std::endl;
+        std::cout << "Invalid address! This IP is not supported!\n";
         return -1;
     }
 
     // Connect the client to the server
     if (connect(sock, (struct sockaddr*) &serverAddress, sizeof(serverAddress)) < 0) {
-        std::cout << "Connection failed: Could not establish a connection on this socket!" << std::endl;
+        std::cout << "Connection failed: Could not establish a connection on this socket!\n";
         return -1;
     }
     
@@ -58,7 +58,7 @@ int main(int argc, char const* argv[]) {
         // Read data received from the server
         reader = read(sock, buffer, 1024);
         // Display the received message from the server
-        std::cout << buffer << std::endl;
+        std::cout << buffer << '\n';
     }
 
     // Wait for the message sending thread to finish
